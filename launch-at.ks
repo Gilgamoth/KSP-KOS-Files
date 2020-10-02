@@ -17,5 +17,5 @@ IF (LaunchIncl) {
         PRINT "Please Specify Launch Time".
     }
 } ELSE {
-    PRINT "Usage: Launch-At [Inclination], [Orbital Altitude], [Launch Hour], [Launch Minute".
+    PRINT "Usage: Launch-At [Inclination], [Orbital Altitude], [Launch Hour], [Launch Minute]".
 }
