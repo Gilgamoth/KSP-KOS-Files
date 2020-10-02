@@ -1,7 +1,7 @@
 # KSP-KOS-Files
 These files are for Kerbal Operating System (KOS) mod for Kerbal Space Program. KOS is available at https://github.com/KSP-KOS/KOS/releases
 
-Some files (*MA*) are based on the work of Mike Aben in his YouTube Channel - https://www.youtube.com/c/MikeAben/
+Some files marked (*MA*) are based on the work of Mike Aben in his YouTube Channel - https://www.youtube.com/c/MikeAben/
 
 Scripts:
 * boot
