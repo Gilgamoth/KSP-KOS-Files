@@ -92,7 +92,10 @@ FUNCTION pitchManuever {
 	WAIT UNTIL ((SHIP:ALTITUDE > pitchStartingAlt) AND (SHIP:AIRSPEED > pitchStartingSpeed)).
 	PRINT " ".
 	PRINT "Starting pitching maneuver.".
-	LOCK STEERING to HEADING(myHeading(), myPitch())+ R(0, 0, myRoll()).
+	SET initialHeading to myHeading().
+	SET initialRoll to myRoll().
+	LOCK STEERING to HEADING(initialHeading, myPitch())+ R(0, 0, initialRoll).
+	// LOCK STEERING to HEADING(myHeading(), myPitch())+ R(0, 0, myRoll()).
 }
 
 FUNCTION lockToPrograde {
