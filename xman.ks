@@ -2,7 +2,7 @@
 // Based on code by Mike Aben (https://www.youtube.com/c/MikeAben/)
 
 GLOBAL mNode to 1.
-GLOBAL oldThrust to 0.
+//GLOBAL oldThrust to 0.
 
 //CLEARSCREEN.
 PRINT " ".
@@ -14,9 +14,20 @@ xMan().
 FUNCTION xMan {
 	IF HASNODE {
 		SAS OFF.
-		SET startReduceTime to 2.
+		SET MinBurnTime TO 5.
+		SET startReduceTime TO 2.
 		SET mNode to NEXTNODE.
 		PRINT "Node in: " + round(mNode:eta) + " seconds, DeltaV: " + round(mNode:deltav:mag).
+		If (burnTime(mNode)<MinBurnTime) {
+			PRINT "WARNING: Burn Time too short!".
+			//PRINT burnTime(mNode).
+			LIST ENGINES IN EngineList.
+			SET MainEngine TO EngineList[EngineList:length -1].
+			UNTIL (burnTime(mNode) > MinBurnTime) {
+				//PRINT "Thrust Limit Set to "+MainEngine:Thrustlimit.
+				SET MainEngine:Thrustlimit to MainEngine:Thrustlimit -1.
+			}
+		}
 		SET startTime to calculateStartTime(mNode, startReduceTime).
 		SET startVector to mNode:BURNVECTOR.
 		lockSteering(mNode).
