@@ -1,3 +1,4 @@
+CORE:PART:GETMODULE("kOSProcessor"):DOEVENT("Open Terminal").
 PARAMETER LaunchIncl is 0.
 PARAMETER OrbitAlt is 80.
 
