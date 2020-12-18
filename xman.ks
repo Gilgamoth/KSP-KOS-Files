@@ -2,7 +2,6 @@
 // Based on code by Mike Aben (https://www.youtube.com/c/MikeAben/)
 
 GLOBAL mNode to 1.
-//GLOBAL oldThrust to 0.
 
 //CLEARSCREEN.
 PRINT " ".
@@ -20,13 +19,16 @@ FUNCTION xMan {
 		PRINT "Node in: " + round(mNode:eta) + " seconds, DeltaV: " + round(mNode:deltav:mag).
 		If (burnTime(mNode)<MinBurnTime) {
 			PRINT "WARNING: Burn Time too short!".
-			//PRINT burnTime(mNode).
 			LIST ENGINES IN EngineList.
-			SET MainEngine TO EngineList[EngineList:length -1].
 			UNTIL (burnTime(mNode) > MinBurnTime) {
-				//PRINT "Thrust Limit Set to "+MainEngine:Thrustlimit.
-				SET MainEngine:Thrustlimit to MainEngine:Thrustlimit -1.
+				FOR CurrEngine IN EngineList {
+					IF (CurrEngine:STAGE = STAGE:NUMBER) {
+						SET CurrEngine:ThrustLimit TO CurrEngine:ThrustLimit -1.
+						SET TLimit to CurrEngine:ThrustLimit.
+					}
+				}
 			}
+			PRINT "Thrust Limit lowered to "+TLimit+"%".
 		}
 		SET startTime to calculateStartTime(mNode, startReduceTime).
 		SET startVector to mNode:BURNVECTOR.
@@ -34,6 +36,7 @@ FUNCTION xMan {
 		startBurn(startTime).
 		reduceThrottle(mNode, startReduceTime).
 		endBurn(mNode, startVector).
+		//SET MainEngine:Thrustlimit TO 100.
 		SAS ON.
 	} ELSE {
 		PRINT " ".
@@ -110,13 +113,6 @@ FUNCTION reduceThrottle {
 
 FUNCTION startBurn {
 	PARAMETER startTime.
-//	IF TIME:SECONDS > (startTime-300) {
-//		WAIT UNTIL TIME:SECONDS > (startTime-300). // Wait for Time to burn to be 5m
-//		IF kuniverse:timewarp:warp > 1 {
-//			PRINT "Slowing Time Warp".
-//			set kuniverse:timewarp:warp to 1.
-//		}
-//	}
 	WAIT UNTIL TIME:SECONDS > (startTime-90).
 	IF kuniverse:timewarp:warp > 0 {
 		PRINT "Cancelling Time Warp with 90s to go".
