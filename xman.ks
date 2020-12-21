@@ -1,5 +1,7 @@
 // XMAN - eXecute Maneuver
-// Based on code by Mike Aben (https://www.youtube.com/c/MikeAben/)
+// Written by Gilgamoth (https://github.com/Gilgamoth) (c)2020
+// Protected under GNU GPL 3.0 https://github.com/Gilgamoth/KSP-KOS-Files/blob/master/LICENSE
+// Based on code by Mike Aben (https://www.youtube.com/c/MikeAben/ - https://github.com/MikeAben64/kOS-Scripts)
 
 GLOBAL mNode to 1.
 
