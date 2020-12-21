@@ -6,9 +6,10 @@ PARAMETER desiredApoapsis.
 
 SET pitchStartingAlt to 250. // Start Pitching at - Altitude m
 SET pitchStartingSpeed to 50. // Start Pitching at - Speed m/s
-SET OptimalTWR to 1.7. // Optimal TWR Default Value
-SET OptimalTWRL to 1.33. // Optimal TWR - Lower Atmosphere
-SET OptimalTWRU to 0.9. // Optimal TWR - Upper Atmosphere
+SET OptimalTWR to 9. // Ship Max TWR Value
+SET OptimalTWRL to 1.45. // Optimal TWR - Lower Atmosphere
+SET OptimalTWRU to 1.45. // Optimal TWR - Upper Atmosphere
+SET TWRLowerAlt to 7.5. // Optimal TWR - Lower Atmosphere Altitude km
 SET TWRUpperAlt to 25. // Optimal TWR - Upper Atmosphere Altitude km
 SET deployAtAlt to 60. // Deployable Altitude km
 SET oldThrust to 0.
