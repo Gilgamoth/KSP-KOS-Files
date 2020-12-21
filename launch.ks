@@ -1,5 +1,7 @@
 // Launch Script
-// Based on code by Mike Aben (https://www.youtube.com/c/MikeAben/)
+// Written by Gilgamoth (https://github.com/Gilgamoth) (c)2020
+// Protected under GNU GPL 3.0 https://github.com/Gilgamoth/KSP-KOS-Files/blob/master/LICENSE
+// Based on code by Mike Aben (https://www.youtube.com/c/MikeAben/ - https://github.com/MikeAben64/kOS-Scripts)
 
 PARAMETER desiredInclination.
 PARAMETER desiredApoapsis.
@@ -49,6 +51,8 @@ SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 PRINT "Enabling SAS".
 IF (NOT SAS) SAS ON.
 
+PRINT "Program Complete".
+
 FUNCTION myPitch {
 	RETURN 900000 / (ALTITUDE + 10000).
 	// RETURN (54021666.2 - ALTITUDE)/sqrt(2918700708000000-(ALTITUDE - 54021666.2)^2).
@@ -92,7 +96,7 @@ FUNCTION countdown {
 FUNCTION pitchManuever {
 	WAIT UNTIL ((SHIP:ALTITUDE > pitchStartingAlt) AND (SHIP:AIRSPEED > pitchStartingSpeed)).
 	PRINT " ".
-	PRINT "Starting pitching maneuver.".
+	PRINT "Starting pitching maneuver at altitude " + altitude.
 	SET initialHeading to myHeading().
 	SET initialRoll to myRoll().
 	LOCK STEERING to HEADING(initialHeading, myPitch())+ R(0, 0, initialRoll).
@@ -108,7 +112,7 @@ FUNCTION lockToPrograde {
 FUNCTION meco { 
 	LOCK THROTTLE to 0.
 	PRINT " ".
-	PRINT "Main Engine Cut-Off.".
+	PRINT "Main Engine Cut-Off at altitude " + altitude.
 }
 
 FUNCTION autoStage {
@@ -120,20 +124,24 @@ FUNCTION autoStage {
 			WAIT 1.
 			SET oldThrust to AVAILABLETHRUST.
 		}
-		IF (SHIP:ALTITUDE < (TWRUpperAlt*1000)) {
-			//PRINT "L: " + OptimalTWR + " " + OptimalTWRL.
-			IF OptimalTWR > OptimalTWRL {
-				SET OptimalTWR to OptimalTWRL.
-				setTWR(OptimalTWR).
+		IF (SHIP:ALTITUDE > (TWRLowerAlt*1000)) {
+			IF (SHIP:ALTITUDE < (TWRUpperAlt*1000)) {
+				//PRINT "L: " + OptimalTWR + " " + OptimalTWRL.
+				IF OptimalTWR > OptimalTWRL {
+					SET OptimalTWR to OptimalTWRL.
+					setTWR(OptimalTWR).
+					//PRINT "TWR: " + OptimalTWR.
+				}
+			} ELSE {
+				//PRINT "U: " + OptimalTWR + " " + OptimalTWRU.
+				IF OptimalTWR > OptimalTWRU {
+					SET OptimalTWR to OptimalTWRU.
+					setTWR(OptimalTWR).
+					//PRINT "TWR: " + OptimalTWR.
+				}
 			}
-		} ELSE {
-			//PRINT "U: " + OptimalTWR + " " + OptimalTWRU.
-			IF OptimalTWR > OptimalTWRU {
-				SET OptimalTWR to OptimalTWRU.
-				setTWR(OptimalTWR).
-			}
+			//WAIT 2.
 		}
-		//WAIT 2.
 	}
 }
 
@@ -170,7 +178,7 @@ FUNCTION setTWR {
 	PARAMETER twrTarget.
 
 	PRINT " ".
-	PRINT "Attempting to lock TWR to " + twrTarget.
+	PRINT "Attempting to lock TWR to " + twrTarget + " at altitude " + altitude.
 	LOCK effectiveThrust TO SHIP:AVAILABLETHRUST * COS(FACING:PITCH).
 	LOCK TWR TO effectiveThrust / (SHIP:MASS * CONSTANT:g0).
 	LOCK THROTTLE TO CHOOSE 1 IF TWR = 0 ELSE twrTarget / TWR.
