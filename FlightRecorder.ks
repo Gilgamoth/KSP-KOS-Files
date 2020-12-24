@@ -18,7 +18,7 @@ WAIT UNTIL (SHIP:ALTITUDE > startingAlt+1). // Wait until Altitude increases (i.
 
 UNTIL FALSE {
     PRINT "T: "+MISSIONTIME+" A:"+ALTITUDE+" AP:"+APOAPSIS+" EA:"+ETA:APOAPSIS.
-    LOG MISSIONTIME+","+ALTITUDE+","+APOAPSIS+","+ETA:APOAPSIS TO LogFile.
+    LOG round(MISSIONTIME,2)+","+round(ALTITUDE,2)+","+round(APOAPSIS,2)+","+round(ETA:APOAPSIS,2) TO LogFile.
     WAIT 5.
 }
 
