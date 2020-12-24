@@ -9,8 +9,8 @@ PARAMETER desiredApoapsis.
 SET pitchStartingAlt to 250. // Start Pitching at - Altitude m
 SET pitchStartingSpeed to 50. // Start Pitching at - Speed m/s
 SET OptimalTWR to 9. // Ship Max TWR Value
-SET OptimalTWRL to 1.45. // Optimal TWR - Lower Atmosphere
-SET OptimalTWRU to 1.45. // Optimal TWR - Upper Atmosphere
+SET OptimalTWRL to 9. // Optimal TWR - Lower Atmosphere
+SET OptimalTWRU to 9. // Optimal TWR - Upper Atmosphere
 SET TWRLowerAlt to 7.5. // Optimal TWR - Lower Atmosphere Altitude km
 SET TWRUpperAlt to 25. // Optimal TWR - Upper Atmosphere Altitude km
 SET deployAtAlt to 60. // Deployable Altitude km
@@ -43,7 +43,7 @@ RUNPATH("xMan").
 
 PRINT "Launched at - Year: " + LaunchTime:YEAR +" Day: " + LaunchTime:day + " Time: " +LaunchTime:HOUR+":"+LaunchTime:MINUTE+":"+LaunchTime:SECOND.
 PRINT "Dinished at - Year: " + TIME:YEAR +" Day: " + Time:day + " Time: " +TIME:HOUR+":"+TIME:MINUTE+":"+TIME:SECOND.
-PRINT "Mission Time " + missionTime +"seconds".
+PRINT "Mission Time " + round(missionTime) +" seconds".
 PRINT " ".
 UNLOCK THROTTLE.
 UNLOCK STEERING.
@@ -51,7 +51,8 @@ SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 PRINT "Enabling SAS".
 IF (NOT SAS) SAS ON.
 
-PRINT "Program Complete".
+PRINT " ".
+PRINT "Launch Complete".
 
 FUNCTION myPitch {
 	RETURN 900000 / (ALTITUDE + 10000).
@@ -96,7 +97,7 @@ FUNCTION countdown {
 FUNCTION pitchManuever {
 	WAIT UNTIL ((SHIP:ALTITUDE > pitchStartingAlt) AND (SHIP:AIRSPEED > pitchStartingSpeed)).
 	PRINT " ".
-	PRINT "Starting pitching maneuver at altitude " + altitude.
+	PRINT "Starting pitching maneuver at altitude " + round(altitude).
 	SET initialHeading to myHeading().
 	SET initialRoll to myRoll().
 	LOCK STEERING to HEADING(initialHeading, myPitch())+ R(0, 0, initialRoll).
@@ -112,7 +113,7 @@ FUNCTION lockToPrograde {
 FUNCTION meco { 
 	LOCK THROTTLE to 0.
 	PRINT " ".
-	PRINT "Main Engine Cut-Off at altitude " + altitude.
+	PRINT "Main Engine Cut-Off at altitude " + round(altitude).
 }
 
 FUNCTION autoStage {
@@ -178,7 +179,7 @@ FUNCTION setTWR {
 	PARAMETER twrTarget.
 
 	PRINT " ".
-	PRINT "Attempting to lock TWR to " + twrTarget + " at altitude " + altitude.
+	PRINT "Attempting to lock TWR to " + twrTarget + " at altitude " + round(altitude).
 	LOCK effectiveThrust TO SHIP:AVAILABLETHRUST * COS(FACING:PITCH).
 	LOCK TWR TO effectiveThrust / (SHIP:MASS * CONSTANT:g0).
 	LOCK THROTTLE TO CHOOSE 1 IF TWR = 0 ELSE twrTarget / TWR.
