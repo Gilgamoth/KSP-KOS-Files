@@ -5,11 +5,8 @@
 
 GLOBAL mNode to 1.
 
-//CLEARSCREEN.
 PRINT " ".
-PRINT "--------------------------------------".
 PRINT "Running XMAN - eXecute MANeuver Script".
-PRINT "--------------------------------------".
 xMan().
 
 FUNCTION xMan {
