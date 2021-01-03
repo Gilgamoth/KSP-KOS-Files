@@ -6,7 +6,7 @@ SET TERMINAL:CHARHEIGHT TO 10.
 PARAMETER LaunchIncl is 0.
 PARAMETER OrbitAlt is 80.
 
-IF (ALTITUDE < 1000) {
+IF (SHIP:STATUS = "PRELAUNCH") {
     CLEARSCREEN.
     PRINT "Launching an Equatorial Orbit at " + OrbitAlt + "km".
     runPath("0:launch",LaunchIncl,OrbitAlt).
