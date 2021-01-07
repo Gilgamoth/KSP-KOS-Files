@@ -1,4 +1,4 @@
-PARAMETER LaunchIncl is 90.
+PARAMETER LaunchIncl is 0.
 PARAMETER OrbitAlt is 80.
 
 IF (SHIP:STATUS = "PRELAUNCH") {

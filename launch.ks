@@ -21,7 +21,7 @@ SET LaunchTime to TIME.
 PRINT "Running Launch Script at:".
 PRINT "Year: " + TIME:YEAR +" Day: " + Time:day + " Time: " +TIME:HOUR+":"+TIME:MINUTE+":"+TIME:SECOND.
 PRINT " ".
-PRINT "Setting Heading to: " + (90-desiredInclination).
+PRINT "Setting Heading to: " + desiredInclination.
 PRINT "Setting Apoapsis to: " + desiredApoapsis +",000m".
 
 PRINT " ".
@@ -43,7 +43,7 @@ RUNPATH("xMan").
 
 PRINT "Launched at - Year: " + LaunchTime:YEAR +" Day: " + LaunchTime:day + " Time: " +LaunchTime:HOUR+":"+LaunchTime:MINUTE+":"+LaunchTime:SECOND.
 PRINT "Dinished at - Year: " + TIME:YEAR +" Day: " + Time:day + " Time: " +TIME:HOUR+":"+TIME:MINUTE+":"+TIME:SECOND.
-PRINT "Mission Time " + round(missionTime) +" seconds".
+PRINT "Mission Time " + floor(missionTime) +" seconds".
 PRINT " ".
 UNLOCK THROTTLE.
 UNLOCK STEERING.
@@ -64,7 +64,7 @@ FUNCTION myRoll {
 }
 
 FUNCTION myHeading {
-	SET roughHeading to 90 - desiredInclination.
+	SET roughHeading to desiredInclination.
 	IF (roughHeading < 0) {
 		SET roughHeading to 360 + roughHeading.
 	}
@@ -97,7 +97,7 @@ FUNCTION countdown {
 FUNCTION pitchManuever {
 	WAIT UNTIL ((SHIP:ALTITUDE > pitchStartingAlt) AND (SHIP:AIRSPEED > pitchStartingSpeed)).
 	PRINT " ".
-	PRINT "Starting pitching maneuver at altitude " + round(altitude).
+	PRINT "Starting pitching maneuver at altitude " + floor(altitude).
 	SET initialHeading to myHeading().
 	SET initialRoll to myRoll().
 	LOCK STEERING to HEADING(initialHeading, myPitch())+ R(0, 0, initialRoll).
@@ -113,7 +113,7 @@ FUNCTION lockToPrograde {
 FUNCTION meco { 
 	LOCK THROTTLE to 0.
 	PRINT " ".
-	PRINT "Main Engine Cut-Off at altitude " + round(altitude).
+	PRINT "Main Engine Cut-Off at altitude " + floor(altitude).
 }
 
 FUNCTION autoStage {
@@ -179,7 +179,7 @@ FUNCTION setTWR {
 	PARAMETER twrTarget.
 
 	PRINT " ".
-	PRINT "Attempting to lock TWR to " + twrTarget + " at altitude " + round(altitude).
+	PRINT "Attempting to lock TWR to " + twrTarget + " at altitude " + floor(altitude).
 	LOCK effectiveThrust TO SHIP:AVAILABLETHRUST * COS(FACING:PITCH).
 	LOCK TWR TO effectiveThrust / (SHIP:MASS * CONSTANT:g0).
 	LOCK THROTTLE TO CHOOSE 1 IF TWR = 0 ELSE twrTarget / TWR.
