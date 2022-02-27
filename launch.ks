@@ -8,13 +8,17 @@ PARAMETER desiredApoapsis.
 
 SET pitchStartingAlt to 250. // Start Pitching at - Altitude m
 SET pitchStartingSpeed to 50. // Start Pitching at - Speed m/s
-SET OptimalTWR to 9. // Ship Max TWR Value
-SET OptimalTWRL to 9. // Optimal TWR - Lower Atmosphere
-SET OptimalTWRU to 9. // Optimal TWR - Upper Atmosphere
+SET OptimalTWR to 2. // Ship Max TWR Value
+SET OptimalTWRL to 2. // Optimal TWR - Lower Atmosphere
+SET OptimalTWRU to 2. // Optimal TWR - Upper Atmosphere
 SET TWRLowerAlt to 7.5. // Optimal TWR - Lower Atmosphere Altitude km
 SET TWRUpperAlt to 25. // Optimal TWR - Upper Atmosphere Altitude km
 SET deployAtAlt to 60. // Deployable Altitude km
 SET oldThrust to 0.
+   // Countdown beeps provided by Hildimar
+SET voice to getVoice(0).
+SET voiceTickNote to NOTE(480, 0.1).
+SET voiceTakeOffNote to NOTE(720, 0.5).
 
 //CLEARSCREEN.
 SET LaunchTime to TIME.
@@ -80,17 +84,30 @@ FUNCTION myHeading {
 FUNCTION countdown {
 	PRINT " ".
 	PRINT "Countdown initiated:".
-	FROM {local x is 10.} UNTIL x = 2 STEP {set x to x-1.} DO {
+	FROM {local x is 10.} UNTIL x = 5 STEP {set x to x-1.} DO {
   		PRINT "T -" + x.
+		// voice:PLAY(voiceTickNote).
 		WAIT 1.
 	}
+	PRINT "T -5".
+	voice:PLAY(voiceTickNote).
+	WAIT 1.
+	PRINT "T -4".
+	voice:PLAY(voiceTickNote).
+	WAIT 1.
+	PRINT "T -3".
+	voice:PLAY(voiceTickNote).
+	WAIT 1.
 	PRINT "T -2 Locking attutide control and throttle".
 	LOCK STEERING to UP + R(0, 0, 180).
 	LOCK THROTTLE to 1.
+	voice:PLAY(voiceTickNote).
 	WAIT 1.
 	PRINT "T -1".
+	voice:PLAY(voiceTickNote).
 	WAIT 1.
 	PRINT "LAUNCH!".
+	voice:PLAY(voiceTakeOffNote).
 	STAGE.
 }
 
@@ -151,7 +168,8 @@ FUNCTION autoDeploy {
 	SET fairing to false.
 	LIST PARTS in partList.
 	FOR part in partList {
-		IF (part:NAME = "fairingSize1" OR part:NAME = "fairingSize2" OR part:NAME = "fairingSize3" OR part:NAME = "restock-fairing-base-0625" OR part:NAME = "restock-fairing-base-1875" OR part:NAME = "fairingSize1p5" OR part:NAME = "fairingSize4") {
+//		IF (part:NAME = "fairingSize1" OR part:NAME = "fairingSize2" OR part:NAME = "fairingSize3" OR part:NAME = "restock-fairing-base-0625-1" OR part:NAME = "restock-fairing-base-0625" OR part:NAME = "restock-fairing-base" OR part:NAME = "restock-fairing-base-1875" OR part:NAME = "fairingSize1p5" OR part:NAME = "fairingSize4") {
+		IF (part:NAME:contains("fairing") {
 			SET fairing to true.
 			BREAK.
 		}
@@ -168,6 +186,7 @@ FUNCTION autoDeploy {
 	WAIT 1.
 	AG9 ON.
 	WAIT 3.
+	
 	PRINT " ".
 	PRINT "Extending Deployable Equipment (AG10)".
 	WAIT 1.

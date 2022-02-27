@@ -6,7 +6,7 @@
 PARAMETER desiredInclination is 90.
 PARAMETER desiredPitch is 87.
 
-SET pitchStartingAlt to 2500.
+SET pitchStartingAlt to 250.
 SET oldThrust to 0.
 
 //CLEARSCREEN.
@@ -24,7 +24,8 @@ autoStage().
 
 
 PRINT "Launched at - Year: " + LaunchTime:YEAR +" Day: " + LaunchTime:day + " Time: " +LaunchTime:HOUR+":"+LaunchTime:MINUTE+":"+LaunchTime:SECOND.
-PRINT "Dinished at - Year: " + TIME:YEAR +" Day: " + Time:day + " Time: " +TIME:HOUR+":"+TIME:MINUTE+":"+TIME:SECOND.
+WAIT UNTIL FALSE.
+PRINT "Finished at - Year: " + TIME:YEAR +" Day: " + Time:day + " Time: " +TIME:HOUR+":"+TIME:MINUTE+":"+TIME:SECOND.
 PRINT "Mission Time " + floor(missionTime) +" seconds".
 PRINT " ".
 UNLOCK THROTTLE.
@@ -58,7 +59,7 @@ FUNCTION pitchManuever {
 }
 
 FUNCTION autoStage {
-	UNTIL (ALTITUDE < 1500) {
+	UNTIL (ALTITUDE > 40000) {
 		IF (AVAILABLETHRUST < (oldThrust -10)) {
 			PRINT " ".
 			PRINT "Staging".
